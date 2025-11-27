@@ -1,0 +1,9 @@
+node_modules/
+.env
+.vscode/
+reports/
+src/reports/allure-results/
+src/reports/allure-report/
+src/reports/videos/
+package-lock.json
+reports/cucumber-report.json
