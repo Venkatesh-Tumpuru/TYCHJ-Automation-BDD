@@ -1,0 +1,114 @@
+name: Run Automation Tests
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Enter tags to execute (example: @smoke)"
+        required: true
+        default: "@smoke"
+        type: string
+
+      browser:
+        description: "Select Browser"
+        required: true
+        type: choice
+        options:
+          - chromium
+          - firefox
+          - webkit
+        default: chromium
+
+      headless:
+        description: "Run in headless mode?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "true"
+
+      parallel:
+        description: "Number of parallel workers"
+        required: true
+        default: "2"
+        type: string
+  
+      retries:
+        description: "Number of retries per scenario"
+        required: true
+        default: "0"
+        type: string
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # -------------------------
+      # Checkout Project
+      # -------------------------
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # -------------------------
+      # Setup Node
+      # -------------------------
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # -------------------------
+      # Install Dependencies
+      # -------------------------
+      - name: Install Dependencies
+        run: npm install
+
+      # -------------------------
+      # Install Playwright Browsers
+      # -------------------------
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      # -------------------------
+      # Inject ENV for Test Execution
+      # -------------------------
+      - name: Set Environment Variables
+        run: |
+          echo "TAGS=${{ github.event.inputs.tags }}" >> $GITHUB_ENV
+          echo "BROWSER=${{ github.event.inputs.browser }}" >> $GITHUB_ENV
+          echo "HEADLESS=${{ github.event.inputs.headless }}" >> $GITHUB_ENV
+          echo "PARALLEL=${{ github.event.inputs.parallel }}" >> $GITHUB_ENV
+          echo "RETRIES=${{ github.event.inputs.retries }}" >> $GITHUB_ENV
+
+      # -------------------------
+      # Run Tests (Parallel)
+      # -------------------------
+      - name: Run Cucumber Tests
+        run: |
+          echo "Running tests with:"
+          echo "Tags: $TAGS"
+          echo "Browser: $BROWSER"
+          echo "Headless: $HEADLESS"
+          echo "Parallel: $PARALLEL"
+          echo "Retries: $RETRIES"
+          npm run test
+
+      # -------------------------
+      # Generate Allure Report
+      # -------------------------
+      - name: Generate Allure Report
+        if: always()
+        run: npm run allure:generate
+
+      # -------------------------
+      # Upload Allure Report as Artifact
+      # -------------------------
+      - name: Upload Allure Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
+          retention-days: 10
