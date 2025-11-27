@@ -137,10 +137,25 @@ jobs:
       - name: ⚙ Set ENV
         run: |
           echo "TAGS=${{ github.event.inputs.tags }}" >> $GITHUB_ENV
+          echo "URL=${{ github.event.inputs.url }}" >> $GITHUB_ENV
           echo "BROWSER=${{ github.event.inputs.browser }}" >> $GITHUB_ENV
           echo "HEADLESS=${{ github.event.inputs.headless }}" >> $GITHUB_ENV
           echo "PARALLEL=${{ github.event.inputs.parallel }}" >> $GITHUB_ENV
           echo "RETRIES=${{ github.event.inputs.retries }}" >> $GITHUB_ENV
+
+          echo "NOTIFY_EMAIL=${{ github.event.inputs.notify_email }}" >> $GITHUB_ENV
+          echo "NOTIFY_SLACK=${{ github.event.inputs.notify_slack }}" >> $GITHUB_ENV
+          echo "NOTIFY_TEAMS=${{ github.event.inputs.notify_teams }}" >> $GITHUB_ENV
+
+          echo "MAIL_HOST=${{ github.event.inputs.mail_host }}" >> $GITHUB_ENV
+          echo "MAIL_PORT=${{ github.event.inputs.mail_port }}" >> $GITHUB_ENV
+          echo "MAIL_USER=${{ github.event.inputs.mail_user }}" >> $GITHUB_ENV
+          echo "MAIL_PASS=${{ github.event.inputs.mail_pass }}" >> $GITHUB_ENV
+          echo "MAIL_TO=${{ github.event.inputs.mail_to }}" >> $GITHUB_ENV
+
+          echo "SLACK_WEBHOOK=${{ github.event.inputs.slack_webhook }}" >> $GITHUB_ENV
+          echo "TEAMS_WEBHOOK=${{ github.event.inputs.teams_webhook }}" >> $GITHUB_ENV
+
 
       - name: 🧪 Run Tests
         run: |
