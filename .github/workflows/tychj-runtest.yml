@@ -4,19 +4,13 @@ on:
   workflow_dispatch:
     inputs:
       tags:
-        description: "🏷️ Enter tags to execute (example: @smoke)"
+        description: "🏷️ Tags (example: @smoke)"
         required: true
         default: "@smoke"
         type: string
 
-      url:
-        description: "🔗 Application URL"
-        required: true
-        default: "https://parabank.parasoft.com/parabank/index.htm"
-        type: string
-
       browser:
-        description: "🌐 Select Browser"
+        description: "🌐 Browser"
         required: true
         type: choice
         options:
@@ -26,106 +20,33 @@ on:
         default: chromium
 
       headless:
-        description: "👻 Run in headless mode?"
+        description: "👻 Headless?"
         required: true
         type: choice
-        options:
-          - "true"
-          - "false"
+        options: ["true","false"]
         default: "true"
 
       parallel:
-        description: "🧵 Number of parallel workers"
+        description: "🧵 Parallel"
         required: true
         default: "2"
         type: string
-  
+        
       retries:
-        description: "🔁 Number of retries per scenario"
+        description: "🔁 Retries"
         required: true
         default: "0"
-        type: string
-
-      notify_email:
-        description: "📧 Enable Email Notification?"
-        required: true
-        type: choice
-        options:
-          - "true"
-          - "false"
-        default: "false"
-
-      notify_slack:
-        description: "💬 Enable Slack Notification?"
-        required: true
-        type: choice
-        options:
-          - "true"
-          - "false"
-        default: "false"
-
-      notify_teams:
-        description: "👥 Enable Teams Notification?"
-        required: true
-        type: choice
-        options:
-          - "true"
-          - "false"
-        default: "false"
-
-      mail_host:
-        description: "📨 SMTP Mail Host"
-        required: true
-        default: "smtp.gmail.com"
-        type: string
-
-      mail_port:
-        description: "📬 SMTP Port"
-        required: true
-        default: "587"
-        type: string
-
-      mail_user:
-        description: "👤 Sender Email ID"
-        required: true
-        default: "test@gmail.com"
-        type: string
-
-      mail_pass:
-        description: "🔑 Email Password/App Password"
-        required: true
-        default: "xxxx"
-        type: string
-
-      mail_to:
-        description: "📥 Recipient Email ID"
-        required: true
-        default: "team@gmail.com"
-        type: string
-
-      slack_webhook:
-        description: "💬 Slack Webhook URL"
-        required: true
-        default: "https://hooks.slack.com/services/xxxx"
-        type: string
-
-      teams_webhook:
-        description: "👥 Teams Webhook URL"
-        required: true
-        default: "https://outlook.office.com/webhook/xxxx"
         type: string
 
 jobs:
   run-tests:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # REQUIRED for publishing to GitHub Pages
 
     steps:
-      - name: 📥 Checkout Repository
+      - name: 📥 Checkout
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: 🟢 Node Setup
         uses: actions/setup-node@v4
         with:
           node-version: 20
@@ -136,51 +57,29 @@ jobs:
       - name: 🌐 Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: ⚙️ Set Environment Variables
+      - name: ⚙ Set ENV
         run: |
           echo "TAGS=${{ github.event.inputs.tags }}" >> $GITHUB_ENV
-          echo "URL=${{ github.event.inputs.url }}" >> $GITHUB_ENV
           echo "BROWSER=${{ github.event.inputs.browser }}" >> $GITHUB_ENV
           echo "HEADLESS=${{ github.event.inputs.headless }}" >> $GITHUB_ENV
           echo "PARALLEL=${{ github.event.inputs.parallel }}" >> $GITHUB_ENV
           echo "RETRIES=${{ github.event.inputs.retries }}" >> $GITHUB_ENV
 
-          echo "NOTIFY_EMAIL=${{ github.event.inputs.notify_email }}" >> $GITHUB_ENV
-          echo "NOTIFY_SLACK=${{ github.event.inputs.notify_slack }}" >> $GITHUB_ENV
-          echo "NOTIFY_TEAMS=${{ github.event.inputs.notify_teams }}" >> $GITHUB_ENV
+      - name: 🧪 Run Tests
+        run: |
+          echo "Running tests..."
+          npm run test
 
-          echo "MAIL_HOST=${{ github.event.inputs.mail_host }}" >> $GITHUB_ENV
-          echo "MAIL_PORT=${{ github.event.inputs.mail_port }}" >> $GITHUB_ENV
-          echo "MAIL_USER=${{ github.event.inputs.mail_user }}" >> $GITHUB_ENV
-          echo "MAIL_PASS=${{ github.event.inputs.mail_pass }}" >> $GITHUB_ENV
-          echo "MAIL_TO=${{ github.event.inputs.mail_to }}" >> $GITHUB_ENV
-
-          echo "SLACK_WEBHOOK=${{ github.event.inputs.slack_webhook }}" >> $GITHUB_ENV
-          echo "TEAMS_WEBHOOK=${{ github.event.inputs.teams_webhook }}" >> $GITHUB_ENV
-
-      - name: 🧪 Run Cucumber Tests
-        run: npm run test
+      - name: 🔄 Convert to Allure JSON
+        run: npm run allure:convert
 
       - name: 📊 Generate Allure Report
-        if: always()
         run: npm run allure:generate
 
-      # ====================================================
-      # 🔥 PUBLISH ALLURE REPORT TO GITHUB PAGES
-      # ====================================================
-      - name: 🌐 Deploy Allure Report to GitHub Pages
-        if: always()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: src/reports/allure-report
-          publish_branch: gh-pages
-          force_orphan: true  # Ensures clean branch
-
-      # Optional: Upload artifact also
-      - name: 📤 Upload Allure Report Artifact
-        if: always()
+      - name: 📤 Upload Allure Report
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: src/reports/allure-report
+          retention-days: 14
+          if-no-files-found: error
