@@ -9,6 +9,12 @@ on:
         default: "@smoke"
         type: string
 
+      url:
+        description: "🔗 Application URL"
+        required: true
+        default: "https://parabank.parasoft.com/parabank/index.htm"
+        type: string
+
       browser:
         description: "🌐 Select Browser"
         required: true
@@ -38,6 +44,87 @@ on:
         description: "🔁 Number of retries per scenario"
         required: true
         default: "0"
+        type: string
+
+      # ------------------------------------------------
+      # 🔔 Notification Toggles (true/false)
+      # ------------------------------------------------
+      notify_email:
+        description: "📧 Enable Email Notification?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+
+      notify_slack:
+        description: "💬 Enable Slack Notification?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+
+      notify_teams:
+        description: "👥 Enable Teams Notification?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+
+      # ------------------------------------------------
+      # 📧 Email Configuration
+      # ------------------------------------------------
+      mail_host:
+        description: "📨 SMTP Mail Host"
+        required: true
+        default: "smtp.gmail.com"
+        type: string
+
+      mail_port:
+        description: "📬 SMTP Port"
+        required: true
+        default: "587"
+        type: string
+
+      mail_user:
+        description: "👤 Sender Email ID"
+        required: true
+        default: "test@gmail.com"
+        type: string
+
+      mail_pass:
+        description: "🔑 Email Password/App Password"
+        required: true
+        default: "xxxx"
+        type: string
+
+      mail_to:
+        description: "📥 Recipient Email ID"
+        required: true
+        default: "team@gmail.com"
+        type: string
+
+      # ------------------------------------------------
+      # 💬 Slack Webhook
+      # ------------------------------------------------
+      slack_webhook:
+        description: "💬 Slack Webhook URL"
+        required: true
+        default: "https://hooks.slack.com/services/xxxx"
+        type: string
+
+      # ------------------------------------------------
+      # 👥 Teams Webhook
+      # ------------------------------------------------
+      teams_webhook:
+        description: "👥 Teams Webhook URL"
+        required: true
+        default: "https://outlook.office.com/webhook/xxxx"
         type: string
 
 jobs:
@@ -77,10 +164,24 @@ jobs:
       - name: ⚙️ Set Environment Variables
         run: |
           echo "TAGS=${{ github.event.inputs.tags }}" >> $GITHUB_ENV
+          echo "URL=${{ github.event.inputs.url }}" >> $GITHUB_ENV
           echo "BROWSER=${{ github.event.inputs.browser }}" >> $GITHUB_ENV
           echo "HEADLESS=${{ github.event.inputs.headless }}" >> $GITHUB_ENV
           echo "PARALLEL=${{ github.event.inputs.parallel }}" >> $GITHUB_ENV
           echo "RETRIES=${{ github.event.inputs.retries }}" >> $GITHUB_ENV
+
+          echo "NOTIFY_EMAIL=${{ github.event.inputs.notify_email }}" >> $GITHUB_ENV
+          echo "NOTIFY_SLACK=${{ github.event.inputs.notify_slack }}" >> $GITHUB_ENV
+          echo "NOTIFY_TEAMS=${{ github.event.inputs.notify_teams }}" >> $GITHUB_ENV
+
+          echo "MAIL_HOST=${{ github.event.inputs.mail_host }}" >> $GITHUB_ENV
+          echo "MAIL_PORT=${{ github.event.inputs.mail_port }}" >> $GITHUB_ENV
+          echo "MAIL_USER=${{ github.event.inputs.mail_user }}" >> $GITHUB_ENV
+          echo "MAIL_PASS=${{ github.event.inputs.mail_pass }}" >> $GITHUB_ENV
+          echo "MAIL_TO=${{ github.event.inputs.mail_to }}" >> $GITHUB_ENV
+
+          echo "SLACK_WEBHOOK=${{ github.event.inputs.slack_webhook }}" >> $GITHUB_ENV
+          echo "TEAMS_WEBHOOK=${{ github.event.inputs.teams_webhook }}" >> $GITHUB_ENV
 
       # ---------------------------------------
       # 🧪 Run Playwright+Cucumber Tests
@@ -89,10 +190,14 @@ jobs:
         run: |
           echo "🚀 Running tests with settings:"
           echo "🏷️ Tags: $TAGS"
+          echo "🔗 URL: $URL"
           echo "🌐 Browser: $BROWSER"
           echo "👻 Headless: $HEADLESS"
           echo "🧵 Parallel: $PARALLEL"
           echo "🔁 Retries: $RETRIES"
+          echo "📧 Notify Email: $NOTIFY_EMAIL"
+          echo "💬 Notify Slack: $NOTIFY_SLACK"
+          echo "👥 Notify Teams: $NOTIFY_TEAMS"
           npm run test
 
       # ---------------------------------------
@@ -110,5 +215,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
-          path: allure-report
+          path: src/reports/allure-report
           retention-days: 10
