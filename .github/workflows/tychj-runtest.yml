@@ -4,13 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       tags:
-        description: "🏷️ Tags (example: @smoke)"
+        description: "🏷️ Enter tags to execute (example: @smoke)"
         required: true
         default: "@smoke"
         type: string
 
+      url:
+        description: "🔗 Application URL"
+        required: true
+        default: "https://parabank.parasoft.com/parabank/index.htm"
+        type: string
+
       browser:
-        description: "🌐 Browser"
+        description: "🌐 Select Browser"
         required: true
         type: choice
         options:
@@ -20,22 +26,93 @@ on:
         default: chromium
 
       headless:
-        description: "👻 Headless?"
+        description: "👻 Run in headless mode?"
         required: true
         type: choice
-        options: ["true","false"]
+        options:
+          - "true"
+          - "false"
         default: "true"
 
       parallel:
-        description: "🧵 Parallel"
+        description: "🧵 Number of parallel workers"
         required: true
         default: "2"
         type: string
-        
+  
       retries:
-        description: "🔁 Retries"
+        description: "🔁 Number of retries per scenario"
         required: true
         default: "0"
+        type: string
+
+      notify_email:
+        description: "📧 Enable Email Notification?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+
+      notify_slack:
+        description: "💬 Enable Slack Notification?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+
+      notify_teams:
+        description: "👥 Enable Teams Notification?"
+        required: true
+        type: choice
+        options:
+          - "true"
+          - "false"
+        default: "false"
+
+      mail_host:
+        description: "📨 SMTP Mail Host"
+        required: true
+        default: "smtp.gmail.com"
+        type: string
+
+      mail_port:
+        description: "📬 SMTP Port"
+        required: true
+        default: "587"
+        type: string
+
+      mail_user:
+        description: "👤 Sender Email ID"
+        required: true
+        default: "test@gmail.com"
+        type: string
+
+      mail_pass:
+        description: "🔑 Email Password/App Password"
+        required: true
+        default: "xxxx"
+        type: string
+
+      mail_to:
+        description: "📥 Recipient Email ID"
+        required: true
+        default: "team@gmail.com"
+        type: string
+
+      slack_webhook:
+        description: "💬 Slack Webhook URL"
+        required: true
+        default: "https://hooks.slack.com/services/xxxx"
+        type: string
+
+      teams_webhook:
+        description: "👥 Teams Webhook URL"
+        required: true
+        default: "https://outlook.office.com/webhook/xxxx"
         type: string
 
 jobs:
