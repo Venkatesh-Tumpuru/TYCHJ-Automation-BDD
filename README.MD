@@ -1,129 +1,171 @@
 # 🚀 Playwright + Cucumber BDD Automation Framework  
-### ⚡ Allure Reporting • Parallel Execution • Tag Filters • Notifications • GitHub CI/CD
-This is a complete enterprise-level UI Automation Testing Framework built using Playwright, Cucumber BDD, JavaScript/TypeScript, Allure Reporting, Parallel Execution, Tag Filters, Environment-based execution, and GitHub CI/CD. Designed so future teams never struggle.
 
-## ⚙️ Environment Configuration (.env)
-Everything runs from `.env`:
-BROWSER=chromium
-HEADLESS=false
-URL=https://parabank.parasoft.com/parabank/index.htm
-TAGS=@smoke
-MAXTIME=30000
-SIMPLETIME=5000
-MINTIME=1000
-PARALLEL=1
-RETRIES=0
-CUCUMBER_PUBLISH_ENABLED=false
-NOTIFY_EMAIL=false
-NOTIFY_SLACK=false
-NOTIFY_TEAMS=false
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USER=your-email@gmail.com
-MAIL_PASS=xxxx
-MAIL_TO=team@gmail.com
-SLACK_WEBHOOK=https://hooks.slack.com/services/xxxx
-TEAMS_WEBHOOK=https://outlook.office.com/webhook/xxxx
+![Node](https://img.shields.io/badge/NodeJS-%3E%3D16-green)  
+![Playwright](https://img.shields.io/badge/Playwright-Automation-blueviolet)  
+![Cucumber](https://img.shields.io/badge/Cucumber-BDD-brightgreen)  
+![Allure](https://img.shields.io/badge/Allure-Reporting-orange)  
+![License](https://img.shields.io/badge/License-MIT-blue)  
+![Status](https://img.shields.io/badge/Build-Passing-success)  
 
-## 📦 Install Dependencies
-npm install
-npx playwright install
+### ⚡ Allure Reporting • Parallel Execution • Tag Filters • Notifications • GitHub CI/CD  
 
-## 🧪 Run Tests
-Run all tests:
-npm run test
-Run tagged tests:
-TAGS=@smoke npm run test
+This is a complete enterprise-level UI Automation Testing Framework built using Playwright, Cucumber BDD, JavaScript/TypeScript, Allure Reporting, Parallel Execution, Tag Filters, Environment-based execution, and GitHub CI/CD. Designed so that future teams never struggle.  
 
-## 🧵 Parallel Execution
-Set in `.env`:
-PARALLEL=3
+## ⚙️ Environment Configuration (.env)  
 
-## 🔁 Retries
-Set in `.env`:
-RETRIES=2
+Everything runs from `.env`:  
 
-## 📸 Screenshots, Videos, Logs
-Framework automatically captures and attaches:
-- Failure screenshots  
-- Video recordings  
-- Console logs  
-- Page errors  
-- HTML dumps  
-- Network traces  
-All displayed inside Allure.
+BROWSER=chromium  
+HEADLESS=false  
+URL=https://parabank.parasoft.com/parabank/index.htm  
+TAGS=@smoke  
+MAXTIME=30000  
+SIMPLETIME=5000  
+MINTIME=1000  
+PARALLEL=1  
+RETRIES=0  
+CUCUMBER_PUBLISH_ENABLED=false  
+NOTIFY_EMAIL=false  
+NOTIFY_SLACK=false  
+NOTIFY_TEAMS=false  
+MAIL_HOST=smtp.gmail.com  
+MAIL_PORT=587  
+MAIL_USER=your-email@gmail.com  
+MAIL_PASS=xxxx  
+MAIL_TO=team@gmail.com  
+SLACK_WEBHOOK=https://hooks.slack.com/services/xxxx  
+TEAMS_WEBHOOK=https://outlook.office.com/webhook/xxxx  
 
-## 📊 Allure Reporting
-Generate:
-npm run allure:generate
-Open:
-npm run allure:open
-Full flow:
-npm run test:allure
-This cleans old results, runs tests, converts cucumber JSON to Allure, writes environment.properties, generates HTML, opens report.
+## 📦 Install Dependencies  
 
-## 🌟 Allure Enhancements
-Custom converter provides:
+npm install  
+npx playwright install  
+
+## 🧪 Run Tests  
+
+Run all tests:  
+npm run test  
+
+Run tagged tests:  
+TAGS=@smoke npm run test  
+
+Headless/Browser/Parallel/Retry are controlled via `.env`.  
+
+## 🧵 Parallel Execution  
+
+Enabled via `.env`:  
+PARALLEL=3  
+
+Framework auto-applies:  
+--parallel 3  
+
+## 🔁 Retries  
+
+Set in `.env`:  
+RETRIES=2  
+
+## 📸 Screenshots, Videos & Logs  
+
+Framework automatically captures and attaches:  
+✔ Failure screenshots  
+✔ Video recordings  
+✔ Browser console logs  
+✔ Page errors  
+✔ HTML dumps  
+✔ Network traces  
+
+All displayed in the Allure Report.  
+
+## 📊 Allure Reporting  
+
+Generate report:  
+npm run allure:generate  
+
+Open report:  
+npm run allure:open  
+
+Full cycle (clean + test + convert + report + open):  
+npm run test:allure  
+
+## 🌟 Allure Enhancements  
+
+Framework contains a custom-built converter which provides:  
 ✔ Step timeline  
-✔ Logs  
-✔ Videos  
-✔ Screenshots  
+✔ Console logs  
+✔ Video attachment  
+✔ Screenshot attachment  
 ✔ Tags in Allure  
-✔ Browser in Allure  
-✔ Environment in Allure  
-✔ Platform in Allure  
-✔ Categories (Timeout, Assertion, Network)  
-✔ Rich step details  
+✔ Browser label  
+✔ Environment label  
+✔ Platform label  
+✔ Allure categories  
 ✔ environment.properties  
+✔ Rich step details  
 
-## 📬 Notifications
-Enable in `.env`:
-NOTIFY_EMAIL=true
-NOTIFY_SLACK=true
-NOTIFY_TEAMS=true
-Supports:
-Email (SMTP), Slack Webhook, Teams Webhook
-Includes:
-Total tests, Passed, Failed, Failed scenario names, Allure path.
+## 📬 Notifications  
 
-## ☁️ GitHub Actions CI/CD
-Supports:
-Tag input  
-Browser selection  
-Headless toggle  
-Parallel count  
-Retry count  
-Allure artifact upload  
-Notifications  
-Fully CI-friendly.
+Enable in `.env`:  
+NOTIFY_EMAIL=true  
+NOTIFY_SLACK=true  
+NOTIFY_TEAMS=true  
 
-## 🧑‍💻 Developer Quick Start
-git clone <repo>
-cd Automation_BDD
-npm install
-npx playwright install
-create .env
-npm run test
-npm run test:allure
+Supports:  
+✔ Email (SMTP/Gmail)  
+✔ Slack (Webhook)  
+✔ Microsoft Teams (Webhook)  
 
-## 🛠️ Troubleshooting
-Allure report empty → check allure-results folder  
-.env not showing in Allure → ensure converter has require("dotenv").config()  
+Notification includes:  
+✔ Total tests  
+✔ Passed count  
+✔ Failed count  
+✔ Failed scenario names  
+✔ Allure Report path  
+
+## ☁️ GitHub Actions CI/CD  
+
+Supports:  
+✔ Tag input  
+✔ Browser selection  
+✔ Headless toggle  
+✔ Parallel count  
+✔ Retry count  
+✔ Allure artifact upload  
+✔ Notifications  
+
+## 🧑‍💻 Developer Quick Start  
+
+git clone <repo>  
+cd Automation_BDD  
+npm install  
+npx playwright install  
+create .env  
+npm run test  
+npm run test:allure  
+
+## 🛠️ Troubleshooting  
+
+Allure report empty → Check allure-results folder.  
+.env values missing → Ensure converter includes require("dotenv").config().  
 Playwright browsers missing → npx playwright install  
-Git push errors → use GitHub Personal Access Token  
+Git push failure → Use GitHub Personal Access Token.  
 
-## 🔮 Future Enhancements
-Docker execution  
-Allure server deployment  
-Dashboard analytics  
-API + UI hybrid  
+## 🔮 Future Enhancements  
 
-## 🤝 Contribution Rules
-Use POM  
-Keep locators in /locators  
-Readable step definitions  
-Meaningful commit messages  
-Never push .env or reports  
+✔ Docker execution  
+✔ Allure Server deployment  
+✔ Dashboard analytics  
+✔ API + UI hybrid automation  
 
-## 🎉 Conclusion
-This framework is scalable, maintainable, CI-ready, highly powerful with Allure reporting, and designed for long-term enterprise usage. Happy Testing! 🚀
+## 🤝 Contribution Rules  
+
+✔ Use Page Object Model  
+✔ Keep selectors in /locators  
+✔ Keep step definitions simple  
+✔ Write meaningful commit messages  
+✔ Never push .env or report folders  
+
+## 🎉 Conclusion  
+
+This automation framework is scalable, maintainable, CI/CD-ready, and extremely powerful with custom Allure reporting. Designed for long-term enterprise use.  
+
+Happy Testing! 🚀
