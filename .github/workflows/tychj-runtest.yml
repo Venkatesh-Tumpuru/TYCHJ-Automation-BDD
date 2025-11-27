@@ -46,9 +46,6 @@ on:
         default: "0"
         type: string
 
-      # ------------------------------------------------
-      # 🔔 Notification Toggles (true/false)
-      # ------------------------------------------------
       notify_email:
         description: "📧 Enable Email Notification?"
         required: true
@@ -76,9 +73,6 @@ on:
           - "false"
         default: "false"
 
-      # ------------------------------------------------
-      # 📧 Email Configuration
-      # ------------------------------------------------
       mail_host:
         description: "📨 SMTP Mail Host"
         required: true
@@ -109,18 +103,12 @@ on:
         default: "team@gmail.com"
         type: string
 
-      # ------------------------------------------------
-      # 💬 Slack Webhook
-      # ------------------------------------------------
       slack_webhook:
         description: "💬 Slack Webhook URL"
         required: true
         default: "https://hooks.slack.com/services/xxxx"
         type: string
 
-      # ------------------------------------------------
-      # 👥 Teams Webhook
-      # ------------------------------------------------
       teams_webhook:
         description: "👥 Teams Webhook URL"
         required: true
@@ -130,37 +118,24 @@ on:
 jobs:
   run-tests:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # REQUIRED for publishing to GitHub Pages
 
     steps:
-      # ---------------------------------------
-      # 📦 Checkout Project
-      # ---------------------------------------
       - name: 📥 Checkout Repository
         uses: actions/checkout@v4
 
-      # ---------------------------------------
-      # ⚙️ Setup Node.js
-      # ---------------------------------------
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # ---------------------------------------
-      # 📚 Install Dependencies
-      # ---------------------------------------
       - name: 📦 Install Dependencies
         run: npm install
 
-      # ---------------------------------------
-      # 🎭 Install Playwright Browsers
-      # ---------------------------------------
       - name: 🌐 Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      # ---------------------------------------
-      # 🌍 Inject Environment Variables
-      # ---------------------------------------
       - name: ⚙️ Set Environment Variables
         run: |
           echo "TAGS=${{ github.event.inputs.tags }}" >> $GITHUB_ENV
@@ -183,37 +158,29 @@ jobs:
           echo "SLACK_WEBHOOK=${{ github.event.inputs.slack_webhook }}" >> $GITHUB_ENV
           echo "TEAMS_WEBHOOK=${{ github.event.inputs.teams_webhook }}" >> $GITHUB_ENV
 
-      # ---------------------------------------
-      # 🧪 Run Playwright+Cucumber Tests
-      # ---------------------------------------
       - name: 🧪 Run Cucumber Tests
-        run: |
-          echo "🚀 Running tests with settings:"
-          echo "🏷️ Tags: $TAGS"
-          echo "🔗 URL: $URL"
-          echo "🌐 Browser: $BROWSER"
-          echo "👻 Headless: $HEADLESS"
-          echo "🧵 Parallel: $PARALLEL"
-          echo "🔁 Retries: $RETRIES"
-          echo "📧 Notify Email: $NOTIFY_EMAIL"
-          echo "💬 Notify Slack: $NOTIFY_SLACK"
-          echo "👥 Notify Teams: $NOTIFY_TEAMS"
-          npm run test
+        run: npm run test
 
-      # ---------------------------------------
-      # 📊 Generate Allure Report
-      # ---------------------------------------
       - name: 📊 Generate Allure Report
         if: always()
         run: npm run allure:generate
 
-      # ---------------------------------------
-      # 📤 Upload Allure Report as Artifact
-      # ---------------------------------------
-      - name: 📤 Upload Allure Report
+      # ====================================================
+      # 🔥 PUBLISH ALLURE REPORT TO GITHUB PAGES
+      # ====================================================
+      - name: 🌐 Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: src/reports/allure-report
+          publish_branch: gh-pages
+          force_orphan: true  # Ensures clean branch
+
+      # Optional: Upload artifact also
+      - name: 📤 Upload Allure Report Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: src/reports/allure-report
-          retention-days: 10
