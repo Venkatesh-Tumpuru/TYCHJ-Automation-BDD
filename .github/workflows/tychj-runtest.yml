@@ -8,13 +8,11 @@ on:
         required: true
         default: "@smoke"
         type: string
-
       url:
         description: "🔗 Application URL"
         required: true
         default: "https://parabank.parasoft.com/parabank/index.htm"
         type: string
-
       browser:
         description: "🌐 Select Browser"
         required: true
@@ -24,7 +22,6 @@ on:
           - firefox
           - webkit
         default: chromium
-
       headless:
         description: "👻 Run in headless mode?"
         required: true
@@ -33,19 +30,16 @@ on:
           - "true"
           - "false"
         default: "true"
-
       parallel:
         description: "🧵 Number of parallel workers"
         required: true
         default: "2"
         type: string
-  
       retries:
         description: "🔁 Number of retries per scenario"
         required: true
         default: "0"
         type: string
-
       notify_email:
         description: "📧 Enable Email Notification?"
         required: true
@@ -54,7 +48,6 @@ on:
           - "true"
           - "false"
         default: "false"
-
       notify_slack:
         description: "💬 Enable Slack Notification?"
         required: true
@@ -63,7 +56,6 @@ on:
           - "true"
           - "false"
         default: "false"
-
       notify_teams:
         description: "👥 Enable Teams Notification?"
         required: true
@@ -72,43 +64,36 @@ on:
           - "true"
           - "false"
         default: "false"
-
       mail_host:
         description: "📨 SMTP Mail Host"
         required: true
         default: "smtp.gmail.com"
         type: string
-
       mail_port:
         description: "📬 SMTP Port"
         required: true
         default: "587"
         type: string
-
       mail_user:
         description: "👤 Sender Email ID"
         required: true
         default: "test@gmail.com"
         type: string
-
       mail_pass:
         description: "🔑 Email Password/App Password"
         required: true
         default: "xxxx"
         type: string
-
       mail_to:
         description: "📥 Recipient Email ID"
         required: true
         default: "team@gmail.com"
         type: string
-
       slack_webhook:
         description: "💬 Slack Webhook URL"
         required: true
         default: "https://hooks.slack.com/services/xxxx"
         type: string
-
       teams_webhook:
         description: "👥 Teams Webhook URL"
         required: true
@@ -156,7 +141,7 @@ jobs:
           echo "SLACK_WEBHOOK=${{ github.event.inputs.slack_webhook }}" >> $GITHUB_ENV
           echo "TEAMS_WEBHOOK=${{ github.event.inputs.teams_webhook }}" >> $GITHUB_ENV
 
-          
+
       - name: 🧪 Run Tests
         run: npm run test
         continue-on-error: true
@@ -196,7 +181,7 @@ jobs:
           path: src/reports/cucumber
           retention-days: 14
 
-     - name: 🔗 Create Public Download Links
+      - name: 🔗 Create Public Download Links
         id: links
         if: always()
         run: |
