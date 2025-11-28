@@ -45,7 +45,7 @@ module.exports = {
     // features
     "src/features/**/*.feature",
     // output cucumber json (used by converter)
-    "--format json:reports/cucumber-report.json",
+    "--format json:src/reports/cucumber-report.json",
     // ts-node / steps / hooks
     "--require src/steps/**/*.ts",
     "--require src/hooks/**/*.ts",

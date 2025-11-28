@@ -156,42 +156,52 @@ jobs:
           echo "SLACK_WEBHOOK=${{ github.event.inputs.slack_webhook }}" >> $GITHUB_ENV
           echo "TEAMS_WEBHOOK=${{ github.event.inputs.teams_webhook }}" >> $GITHUB_ENV
 
-
+          
       - name: 🧪 Run Tests
         run: npm run test
         continue-on-error: true
 
-      - name: 🔄 Convert to Allure Format
-        if: always()
+      - name: 🔄 Convert To Allure JSON
         run: npm run allure:convert
+        if: always()
 
       - name: 📊 Generate Allure Report
-        if: always()
         run: npm run allure:generate
+        if: always()
 
       - name: 📤 Upload Allure Report
-        if: always()
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: allure-report
           path: src/reports/allure-report
           retention-days: 14
 
-      - name: 📤 Upload Cucumber JSON Report
-        if: always()
+      - name: 📤 Upload Cucumber JSON
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: cucumber-report
+          name: cucumber-json
           path: src/reports/cucumber-report.json
           retention-days: 14
 
-      - name: 📤 Upload Videos
-        if: always()
+      - name: 📘 Generate Cucumber HTML
+        run: npm run cucumber:html
+
+      - name: 📤 Upload Cucumber HTML
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: test-videos
-          path: src/reports/videos
-          retention-days: 7
+          name: cucumber-html
+          path: src/reports/cucumber
+          retention-days: 14
+
+     - name: 🔗 Create Public Download Links
+        id: links
+        if: always()
+        run: |
+          echo "ALLURE_URL=${{ steps.upload_allure.outputs.artifact-url }}" >> $GITHUB_ENV
+          echo "CUCUMBER_URL=${{ steps.upload_cucumber.outputs.artifact-url }}" >> $GITHUB_ENV
 
       - name: 📢 Send Notifications
         if: always()

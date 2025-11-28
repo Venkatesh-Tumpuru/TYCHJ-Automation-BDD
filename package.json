@@ -11,6 +11,7 @@
     "allure:open": "allure open src/reports/allure-report",
     "allure:serve": "allure serve src/reports/allure-results",
     "notify": "ts-node src/utils/sendNotifications.js",
+    "cucumber:html": "node src/reporter/generateCucumberHTML.js",
     "test:allure": "npm run allure:clean && npm run test && npm run allure:convert && npm run allure:generate && npm run allure:open"
   },
   "keywords": [],
@@ -24,6 +25,7 @@
     "cpx2": "^4.2.1",
     "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
+    "multiple-cucumber-html-reporter": "^3.9.3",
     "playwright": "^1.57.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

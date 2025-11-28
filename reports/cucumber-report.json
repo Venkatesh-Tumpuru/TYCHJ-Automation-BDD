@@ -1,0 +1,130 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "sample-login;validate-login1",
+        "keyword": "Scenario",
+        "line": 4,
+        "name": "Validate login1",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 516200200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 5,
+            "name": "user navigates to application",
+            "match": {
+              "location": "src\\steps\\sample.steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2457036499
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 313770400
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 3
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "sample-login;validate-login2",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Validate login2",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 609180600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 11,
+            "name": "user navigates to application",
+            "match": {
+              "location": "src\\steps\\sample.steps.ts:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2365562500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 12,
+            "name": "user enters login info",
+            "match": {
+              "location": "src\\steps\\sample.steps.ts:11"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 5014007300,
+              "error_message": "Error: function timed out, ensure the promise resolves within 5000 milliseconds\n    at Timeout.<anonymous> (E:\\Automation_BDD\\node_modules\\@cucumber\\cucumber\\src\\time.ts:52:14)\n    at listOnTimeout (node:internal/timers:588:17)\n    at processTimers (node:internal/timers:523:7)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "user should see dashboard",
+            "match": {
+              "location": "src\\steps\\sample.steps.ts:15"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 230646800
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 9
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "sample-login",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Sample Login",
+    "tags": [],
+    "uri": "src\\features\\sample.feature"
+  }
+]
