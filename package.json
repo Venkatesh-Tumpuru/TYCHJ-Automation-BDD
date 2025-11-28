@@ -10,6 +10,7 @@
     "allure:generate": "allure generate src/reports/allure-results --clean -o src/reports/allure-report",
     "allure:open": "allure open src/reports/allure-report",
     "allure:serve": "allure serve src/reports/allure-results",
+    "notify": "ts-node src/utils/sendNotifications.js",
     "test:allure": "npm run allure:clean && npm run test && npm run allure:convert && npm run allure:generate && npm run allure:open"
   },
   "keywords": [],

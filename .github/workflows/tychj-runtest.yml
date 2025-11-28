@@ -112,7 +112,7 @@ on:
       teams_webhook:
         description: "👥 Teams Webhook URL"
         required: true
-        default: "https://outlook.office.com/webhook/xxxx"
+        default: "https://tychonsolution.webhook.office.com/webhookb2/c6847e4e-0b96-4233-a0cb-e999eb422713@df39b915-b72f-429a-8164-4983c27bb320/IncomingWebhook/5852ea4ce5c9447ab0e2fbb84f23306d/541176d1-32a4-4523-9bd9-fd970938e78a/V21h9xidr3uBAelmgCtIMKoV0O2BcqoeZTg-TOLBFNRx01"
         type: string
 
 jobs:
@@ -158,20 +158,41 @@ jobs:
 
 
       - name: 🧪 Run Tests
-        run: |
-          echo "Running tests..."
-          npm run test
+        run: npm run test
+        continue-on-error: true
 
-      - name: 🔄 Convert to Allure JSON
+      - name: 🔄 Convert to Allure Format
+        if: always()
         run: npm run allure:convert
 
       - name: 📊 Generate Allure Report
+        if: always()
         run: npm run allure:generate
 
       - name: 📤 Upload Allure Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: allure-report
           path: src/reports/allure-report
           retention-days: 14
-          if-no-files-found: error
+
+      - name: 📤 Upload Cucumber JSON Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report
+          path: src/reports/cucumber-report.json
+          retention-days: 14
+
+      - name: 📤 Upload Videos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-videos
+          path: src/reports/videos
+          retention-days: 7
+
+      - name: 📢 Send Notifications
+        if: always()
+        run: npm run notify
