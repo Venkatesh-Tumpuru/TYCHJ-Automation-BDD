@@ -1,3 +1,80 @@
+# =============================
+# Node Modules
+# =============================
 node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# =============================
+# Environment Files
+# =============================
 .env
+.env.local
+.env.*.local
+
+# =============================
+# TypeScript Build
+# =============================
+dist/
+build/
+tsconfig.tsbuildinfo
+
+# =============================
+# Playwright
+# =============================
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+
+# =============================
+# Cucumber
+# =============================
+reports/
+*cucumber-report.json
+*.ndjson
+*.retry
+rerun.txt
+
+# =============================
+# Allure Reports
+# =============================
+allure-report/
+allure-results/
+src/reports/allure-report/
+src/reports/allure-results/
+
+# =============================
+# Screenshots / Videos
+# =============================
+screenshots/
+videos/
+src/reports/screenshots/
+src/reports/videos/
+
+# =============================
+# Logs
+# =============================
+*.log
+logs/
+debug.log
+
+# =============================
+# OS Files
+# =============================
+.DS_Store
+Thumbs.db
+
+# =============================
+# VSCode
+# =============================
 .vscode/
+*.code-workspace
+
+# =============================
+# Coverage (if used later)
+# =============================
+coverage/
+

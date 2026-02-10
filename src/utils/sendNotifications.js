@@ -79,10 +79,6 @@ async function sendEmail() {
     <li>⚠ Skipped: <b>${summary.skipped}</b></li>
     <li>📘 Total: <b>${summary.total}</b></li>
   </ul>
-
-  <h3>📄 Reports</h3>
-  <p><a href="${ALLURE_URL}">📁 Download Allure Report</a></p>
-  <p><a href="${CUCUMBER_URL}">📘 Download Cucumber HTML Report</a></p>
   `;
 
   await transporter.sendMail({
